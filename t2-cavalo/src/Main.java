@@ -32,15 +32,41 @@ public class Main {
         System.out.println();
 
 
-        System.out.println("4 - O grafo possui ciclo? \n");
-        Cycle cycleF = new Cycle(G);
-        if (cycleF.hasCycle()){
-            System.out.println("Sim, esse grafo possui ciclo");
-            System.out.println("5 - Cliclo encortado: ");
-            for (int v : cycleF.cycle()) {
-                System.out.print(v + " ");
+        Cycle cycleFinder = new Cycle(G);
+        System.out.print("4. O grafo possui ciclo? ");
+        if (cycleFinder.hasCycle()) {
+            System.out.println("Sim");
+            System.out.print("5. Um ciclo encontrado: ");
+
+            // 1. Criamos uma lista normal que aceita .size() e .get(i)
+            java.util.ArrayList<Integer> listaDoCiclo = new java.util.ArrayList<>();
+
+            // 2. Despejamos os dados do ciclo dentro da lista
+            for (int v : cycleFinder.cycle()) {
+                listaDoCiclo.add(v);
             }
-            System.out.println();
+
+            // 3. O ciclo original repete a ponta (ex: 7 0 5 ... 7).
+            // Removemos o último para poder girar a lista sem duplicar números.
+            listaDoCiclo.remove(listaDoCiclo.size() - 1);
+
+            // 4. O giro: Enquanto o primeiro número não for 0,
+            // tiramos da primeira posição (índice 0) e colocamos no final da fila.
+            while (listaDoCiclo.get(0) != 0) {
+                int primeiro = listaDoCiclo.remove(0);
+                listaDoCiclo.add(primeiro);
+            }
+
+            // 5. Como é um ciclo fechado, precisamos adicionar o 0 no final de novo
+            listaDoCiclo.add(0);
+
+            // 6. AGORA SIM! O seu fori usando o .size() imprimindo a ordem perfeita
+            for (int i = 0; i < listaDoCiclo.size(); i++) {
+                int verticeAtual = listaDoCiclo.get(i);
+                System.out.print(verticeAtual + " ");
+            }
+            System.out.println(); // Quebra de linha no final
+
         } else {
             System.out.println("Não");
         }
