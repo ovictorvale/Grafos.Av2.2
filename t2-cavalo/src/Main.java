@@ -1,17 +1,23 @@
 public class Main {
     public static void main(String[] args) {
-        String caminhoEntrada = "dados/entrada.txt";
-        In in = new In(caminhoEntrada);
+        // Caminho do arquivo de entrada
+        String path = "dados/entrada.txt";
+        In in = new In(path);
+
+
         Graph G = new Graph(in);
 
-        System.out.println("1- Lista de Adjacencias: \n");
+        System.out.println("=== Resolução de Problemas com Grafos - Cavalo 3x3 ===");
+        System.out.println();
+
+
+        System.out.println("1. Lista de adjacência:");
         System.out.println(G);
 
 
-        System.out.println("2 - Componentes Conexas: \n");
         CC cc = new CC(G);
         int m = cc.count();
-        System.out.println("Número de componentes conexas: " + m);
+        System.out.println("2. Componentes conexas: " + m);
         for (int i = 0; i < m; i++) {
             System.out.print("Vértices da componente " + i + ": ");
             for (int v = 0; v < G.V(); v++) {
@@ -21,9 +27,8 @@ public class Main {
         }
         System.out.println();
 
-
-        System.out.println("3 - Distancia entre vértices: (0,0) e (2,2)\n");
         BreadthFirstPaths bfs = new BreadthFirstPaths(G, 0);
+        System.out.print("3. Distância mínima entre (0,0) e (2,2): ");
         if (bfs.hasPathTo(8)) {
             System.out.println(bfs.distTo(8));
         } else {
@@ -37,39 +42,17 @@ public class Main {
         if (cycleFinder.hasCycle()) {
             System.out.println("Sim");
             System.out.print("5. Um ciclo encontrado: ");
-
-            // 1. Criamos uma lista normal que aceita .size() e .get(i)
-            java.util.ArrayList<Integer> listaDoCiclo = new java.util.ArrayList<>();
-
-            // 2. Despejamos os dados do ciclo dentro da lista
             for (int v : cycleFinder.cycle()) {
-                listaDoCiclo.add(v);
+                System.out.print(v + " ");
             }
-
-            // 3. O ciclo original repete a ponta (ex: 7 0 5 ... 7).
-            // Removemos o último para poder girar a lista sem duplicar números.
-            listaDoCiclo.remove(listaDoCiclo.size() - 1);
-
-            // 4. O giro: Enquanto o primeiro número não for 0,
-            // tiramos da primeira posição (índice 0) e colocamos no final da fila.
-            while (listaDoCiclo.get(0) != 0) {
-                int primeiro = listaDoCiclo.remove(0);
-                listaDoCiclo.add(primeiro);
-            }
-
-            // 5. Como é um ciclo fechado, precisamos adicionar o 0 no final de novo
-            listaDoCiclo.add(0);
-
-            // 6. AGORA SIM! O seu fori usando o .size() imprimindo a ordem perfeita
-            for (int i = 0; i < listaDoCiclo.size(); i++) {
-                int verticeAtual = listaDoCiclo.get(i);
-                System.out.print(verticeAtual + " ");
-            }
-            System.out.println(); // Quebra de linha no final
-
+            System.out.println();
         } else {
             System.out.println("Não");
         }
 
+
+        System.out.println("\n--- Análise de Complexidade (Algoritmo de Ciclo/DFS) ---");
+        System.out.println("Tempo: O(V + E), pois o DFS visita cada vértice e aresta no máximo uma vez.");
+        System.out.println("Espaço: O(V), para armazenar os arrays de marcação (visited) e a pilha de recursão.");
     }
 }
